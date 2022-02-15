@@ -1,0 +1,245 @@
+import time
+
+#Variables
+job = str()
+rich_money = int(50000)
+rich_income = int(1000)
+player_money = int(0)
+player_income = int(0)
+turn = int(0)
+
+def DaysPassed(days, rmon, pmon):
+    global player_money
+    global rich_money
+    global job
+    for x in range(int(days)):
+      rmon += rich_income
+      pmon += player_income
+      print("Rich People: ","${:,.0f}".format(rmon))
+      print("You: ","${:,.0f}".format(pmon))
+      time.sleep(1)
+      player_money = pmon
+      rich_money = rmon
+      if job != 1:
+        if player_money >= 100000:
+          job = 4
+          break
+        if rich_money >= 100000:
+          break
+      if job == 1:
+        if player_money >= 50000:
+          break
+        
+
+def HowMDays():
+  global rich_money
+  global player_money
+  choice = input("How many days would you like to go by? (1-25): ")   
+  print(choice, "turns pass by....")
+  DaysPassed(choice, rich_money, player_money)
+  return choice
+
+def Income(rinc, pinc):
+  print("Rich People Income: ","${:,.0f}".format(rinc),"per day.")
+  print("Your Income: ","${:,.0f}".format(pinc), "per day.")
+  print()
+
+
+#Begin Program
+print("Welcome to the Gatsby Game.")
+time.sleep(0)
+print("Your goal is to reach $100,000")
+time.sleep(0)
+print("And you have to beat the rich people who have inherited their money from their parents")
+time.sleep(0)
+print("They start with $50,000")
+time.sleep(0)
+print("You start with $0")
+time.sleep(0)
+print("For you are currently a \"penniless young man without a past\"\nThe rich currently earn $1,000 a day. \n")
+time.sleep(0)
+
+job_choice = str(input("You need a job if you are to reach $100,000 before the rich,\n\nDo you want to accept a job at Cars & Gasoline? (y/n): "))
+
+if job_choice == "y":
+  #1 = Car Job #2 = Bootlegger #3 == Drug Business
+  job = 1
+
+if job_choice == "n":
+  
+  time.sleep(1)
+  print("\nOh, well you have one more [legal] option left then.")
+  job_choice = input("Would you like to accept a job at the Drug Business instead? (y/n): ")
+  
+  if job_choice == "y":
+    job = 3
+  
+  if job_choice == "n":
+    time.sleep(1)
+    print("\nWell, then all you have left is something illegal.")
+    job = 2
+  
+
+#Job Loops
+while rich_money < 100000 or player_money < 100000:
+  if job == 0:
+    job_choice = input("\nWhich job would you like to take? Car Job?(1) Bootlegger?(2) Drug Business?(3): ")
+    time.sleep(1)
+    job = int(job_choice)
+    print()
+  
+  if job == 1:
+    print("\nCongratulations! You have been hired at Cars & Gasoline! Your starting wage is $250 per day.\n")
+    player_income = int(250)
+    while job == 1:
+      Income(rich_income, player_income)
+      choice = HowMDays()
+      if player_money <= 50000:
+        if int(choice) >= 5:
+          if int(choice) >= 10:
+            print("Congratulations! You earned a raise! + $5,000 per day\n")
+            player_income += 5000
+            Income(rich_income, player_income)
+          else:
+            print("Congratulations! You earned a raise! + $2,000 per day\n")
+            player_income += 2000
+            Income(rich_income, player_income)
+        
+        change = input("Would you like to change jobs? (y/n): ")
+        if change == "n":
+          print("\nYay! We're glad you decided to stay!")
+        if change == "y":
+          print("Oh ok, buh bye.")
+          time.sleep(1)
+          job = 0
+
+      else:
+        leftover = 100000 - rich_money
+        time.sleep(1)
+        print("\nOh shoot! Something happened in the gas pump! You just lost a ton of money! -30,000")
+        player_money -= 30000
+        time.sleep(3)
+        print("Dang! The rich just got a huge paycheck! Rich ","+${:,.0f}".format(leftover))
+        rich_money += leftover
+        print("\nYou: ","${:,.0f}".format(player_money)
+        )
+        print("Rich: ","${:,.0f}".format(rich_money))
+        time.sleep(3)
+        job = 5
+        break
+        
+  
+  if job == 2:
+    time.sleep(1)
+    print("\nCongratulations? You have become an illegal bootlegger, selling alcohol outside the law")
+    player_income = 5000
+    time.sleep(3)
+    print("\nWell at least you're making a lot of money right?\n")
+    while job == 2:
+      Income(rich_income, player_income)
+      choice = HowMDays()
+      if player_money <= 99999 and rich_money <= 99999:
+        change = input("Would you like to change jobs? (y/n): ")
+        if change == "n":
+          print("\nYay! We're glad you decided to stay!")
+        if change == "y":
+          print("Oh ok, buh bye.")
+          time.sleep(1)
+          job = 0
+
+  if job == 3:
+    time.sleep(1)
+    print("Congratulations you have been hired in the Drug Business!")
+    player_income = 500
+    time.sleep(1)
+    
+    while job == 3:
+      Income(rich_income, player_income)
+      choice = HowMDays()
+      print("This Job is a forever job, you cannot switch jobs.")
+      skip = input("Would you like to skip ahead? (y/n): ")
+      if skip == "y":
+        rich_money = 100000
+      if rich_money >= 100000:
+        job = 6
+  
+  if job == 4:
+    time.sleep(1)
+    print("\nWow! You reached $100,000 before the rich!")
+    time.sleep(3)
+    print("But.....")
+
+    input("\npress ENTER to continue: ")
+
+    print("\nSome nasty events have occured.")
+    print("A crazy man unexpectedly came while you were bathing in your new luxurious pool you bought, and shot you dead.")
+    print("Turns out no one liked you, and you had a pitifully sad funeral because no one came.")
+
+    input("\npress ENTER to continue: ")
+
+    print("\nYou were like Jay Gatsby.")
+    print("You worked for your money and earned your wealth and status, even though it was illegal.")
+
+    input("\npress ENTER to continue: ")
+
+    print("\nNick Carraway was told, \"Just remember that all the people in this world haven't had the advantages you've had\" Nick Carraway inherited money, so he never faced a consequence harder than having to take care of a funeral. But people like him still win. Even though you earned your place, \nYou still lose.\nBecause you weren't born rich.")
+
+    input("\npress ENTER to continue: ")
+
+    print("Like Gatsby, you had to face a consequence that was, \"a nightmare -- grotesque, circumstantial, eager, and untrue.\" F.Scott Fitzgerald made consequences like this happen to Gatsby and Wilson on purpose. \nIf the American Dream was perfect and worked, no one should have to face a consequence like that. Even though you made a fortune, you have a terrible ending because you weren't born rich, and had to face the implications of that, and that's what Fitzgerald was showing when Gatsby died.")
+
+    break
+
+  if job == 5:
+    time.sleep(1)
+    print("\nDang, the rich reached $100,000 before you.")
+    time.sleep(3)
+    print("Thats unfortunate.")
+    time.sleep(3)
+    print("You worked extremely hard!\nYou made a ton of money and you were on your way to making a fortune!")
+    time.sleep(3)
+    print("But then the accident in the workshop....")
+
+    input("\npress ENTER to continue: ")
+
+    print("\nLike the poor \"George Wilson in the Great Gatsby\"\nwho \"Lived in the valley of ashes, \"Cars bought & Sold\"\" \n\nThe rich stole your wife, and took some of your money, and got away with no consequences.")
+    input("\npress ENTER to continue: ")
+
+    print("\nYou ended up going crazy, almost incoherent, and commited suicide.")
+
+    input("\npress ENTER to continue: ")
+
+    print("\nJust like F.Scott Fitzgerald portrayed people who worked hard and earned their money, you had to suffer terrible consequences. \n While the rich people, such as \"Tom & Daisy -- smashed up things and creatures and then retreated back into their money or their vast carelessness, --[and] Let other people clean up their mess.\"")
+
+    input("\npress ENTER to continue: ")
+
+    print("\nIt didn't matter if you worked hard, you were going to lose anyway, for the American Dream is flawed that way. \nFitzgerald portrayed the people who worked for their money and the people who just inherited it this way on purpose. \n The American dream says that everyone has equal opportunity to achieve success if you work hard. \nBut Fitzgerald says this is not true, for everyone who actually worked had to suffer consequences, such as Wilson and Gatsby. While the people who were just given money, like Tom, Daisy, and Nick, get to runaway hands free, no consequences. \nIf the American dream worked, this would not happen, and Fitzgerald purposefully set it up this way, criticizing the American Dream.")
+    break
+
+  if job == 6:
+    print("\nThe Rich Win!")
+    time.sleep(1)
+
+    print("You found a nice reliable job and worked hard. But you just couldn't make quite enough money to beat the rich.")
+
+    input("\npress ENTER to continue: ")
+
+    print("\nThe Rich, people like Tom & Daisy, can give things such as \"wedding he gave her a string of pearls worth $350,000\" on a whim. ")
+    print("You would never have been able to do something that. \n You will always be behind the rich.")
+
+    input("\npress ENTER to continue: ")
+
+    print("\nYou didn't work very hard, and you didn't inherit money, so you didn't face any terrible consequences, but you didn't face any good ones either. You are stuck, and don't live a terribley happy or fulfilling life.")
+    print("You could be like Myrtle Wilson. You don't work and weren't born rich, so unhappy happenstance comes along and something will happen to you, or you won't have a happy life.")
+
+    input("\npress ENTER to continue: ")
+
+    print("\nF. Scott Fitzgerald portayed it this way because the American Dream doesn't work. Equal opportunity. You may not have taken that opportunity, but bad consequences happened all the same, because only the rich get away free.")
+
+
+    break
+
+time.sleep(1)
+print("The End.") 
+
+      
